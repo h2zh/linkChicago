@@ -5,6 +5,7 @@ import Link from "next/link";
 import { AwesomeLink } from "../components/AwesomeLink";
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import { FcGoogle } from "react-icons/fc";
 
 const AllLinksQuery = gql`
   query allLinksQuery($first: Int, $after: String) {
@@ -33,25 +34,32 @@ function Home() {
   const { user } = useUser();
 
   const { data, loading, error, fetchMore } = useQuery(AllLinksQuery, {
-    variables: { first: 3 },
+    variables: { first: 10 },
   });
 
   if (!user) {
     return (
-      <div className="flex flex-col items-center justify-center">
-        <div className="flex flex-row items-center justify-center">
-          <Link href="/api/auth/login">
-            <a className=" block bg-gray-100 border-0 py-1 px-2 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">
-              Login
-            </a>
-          </Link>
-          &nbsp;to build your custom website directory
+      <div>
+        <Head>
+          <title>linkChicago</title>
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+        <div className="flex flex-col items-center justify-center">
+          <div className="flex-col inline-flex items-center justify-center md:flex-row space-y-2">
+            <Link href="/api/auth/login">
+              <a className="inline-flex items-center bg-gray-100 border-0 py-2 px-4 pl-5 focus:outline-none hover:bg-gray-200 rounded text-base mt-1 md:mt-2">
+                Login with&nbsp;
+                <FcGoogle />
+              </a>
+            </Link>
+            <p>&nbsp;&nbsp;to build your custom website directory</p>
+          </div>
+          <p className="mt-8 text-center text-sm">
+            <i>Feel free to use the following testing account!</i> <br />
+            Email: test@gmail.com <br />
+            Password: Nh5WTeDESAW2ttj
+          </p>
         </div>
-        <p className="mt-5 text-center text-sm">
-          <i>Feel free to use the following testing account!</i> <br />
-          Email: test@gmail.com <br />
-          Password: Nh5WTeDESAW2ttj
-        </p>
       </div>
     );
   }
@@ -88,25 +96,29 @@ function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="container mx-auto max-w-5xl my-2 px-5 ">
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+        <div className="columns-2 sm:columns-3 lg:columns-4 gap-5">
+          {/* <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5"> */}
           {data?.links.edges.map(({ node }, i) => (
             // <Link href={`/link/${node.id}`} key={i}>
             //   <a>
-            <AwesomeLink
-              title={node.title}
-              category={node.category}
-              url={node.url}
-              id={node.id}
-              description={node.description}
-              imageUrl={node.imageUrl}
-            />
+            <div className="break-inside-avoid-column">
+              <AwesomeLink
+                title={node.title}
+                category={node.category}
+                url={node.url}
+                id={node.id}
+                description={node.description}
+                imageUrl={node.imageUrl}
+                key={i}
+              />
+            </div>
             //   </a>
             // </Link>
           ))}
         </div>
         {hasNextPage ? (
           <button
-            className="px-4 py-2 bg-blue-500 text-white rounded my-10"
+            className="px-3 py-1 bg-blue-500 text-white rounded my-5 w-full inline-flex justify-center"
             onClick={() => {
               fetchMore({
                 variables: { after: endCursor },

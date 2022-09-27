@@ -2,6 +2,7 @@ import React from "react";
 import { gql, useQuery, useMutation } from "@apollo/client";
 import { useUser } from "@auth0/nextjs-auth0";
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { MdAddCircle } from "react-icons/md";
@@ -41,11 +42,16 @@ export const AwesomeLink = ({
   };
   return (
     <div key={id} className="shadow  max-w-md  rounded">
-      <Link href={url}>
-        <img src={imageUrl} className="cursor-pointer" />
-      </Link>
-      <div className="p-5 flex flex-col space-y-2">
-        <p className="text-sm text-gray-400">{category}</p>
+      <div className="relative">
+        <p className="absolute bottom-2 left-5 text-base text-white">
+          {category}
+        </p>
+        <Link href={url}>
+          <img src={imageUrl} className="w-full cursor-pointer" />
+        </Link>
+      </div>
+
+      <div className="p-5 py-3 flex flex-col space-y-2">
         <div className="flex flex-row space-x-1 items-center">
           <Link href={url}>
             <div className="flex flex-row">

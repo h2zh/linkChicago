@@ -17,7 +17,7 @@ const FavoritesQuery = gql`
 
 const Favorites = () => {
   const { data, loading, error } = useQuery(FavoritesQuery);
-  if (error) return <p>Oops! SOmething went wrong {error}</p>;
+  if (error) return <p>Oops! Something went wrong {error}</p>;
   return (
     <div className="mx-auto max-w-5xl px-10">
       <h1 className="text-3xl font-medium my-5">My Favorites</h1>
@@ -26,8 +26,8 @@ const Favorites = () => {
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
           {data.favorites.length === 0 ? (
-            <p className="text-2xl font-medium">
-              You haven't bookmarked any links yet 👀
+            <p className="text-md font-medium">
+              Go and add some links to here!
             </p>
           ) : (
             data.favorites.map((link) => (
