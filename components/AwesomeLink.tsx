@@ -1,4 +1,23 @@
-import React from 'react';
+import React from "react";
+import { gql, useQuery, useMutation } from "@apollo/client";
+import { useUser } from "@auth0/nextjs-auth0";
+import Link from "next/link";
+import { useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
+import { MdAddCircle } from "react-icons/md";
+import { FiExternalLink } from "react-icons/fi";
+
+const BookmarkLinkMutation = gql`
+  mutation ($id: String!) {
+    bookmarkLink(id: $id) {
+      title
+      url
+      imageUrl
+      category
+      description
+    }
+  }
+`;
 
 export const AwesomeLink = ({
   imageUrl,
@@ -8,26 +27,44 @@ export const AwesomeLink = ({
   description,
   id,
 }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [createBookmark] = useMutation(BookmarkLinkMutation);
+
+  const bookmark = async () => {
+    setIsLoading(true);
+    toast.promise(createBookmark({ variables: { id: id } }), {
+      loading: "working on it",
+      success: "Saved successfully! 🎉",
+      error: `Something went wrong 😥 Please try again`,
+    });
+    setIsLoading(false);
+  };
   return (
     <div key={id} className="shadow  max-w-md  rounded">
-      <img src={imageUrl} />
+      <Link href={url}>
+        <img src={imageUrl} className="cursor-pointer" />
+      </Link>
       <div className="p-5 flex flex-col space-y-2">
-        <p className="text-sm text-blue-500">{category}</p>
-        <p className="text-lg font-medium">{title}</p>
-        <p className="text-gray-600">{description}</p>
-        <a href={url} className="flex hover:text-blue-500">
-          {/* removes https from url */}
-          {url.replace(/(^\w+:|^)\/\//, '')}
-          <svg
-            className="w-6 h-6"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"></path>
-            <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"></path>
-          </svg>
-        </a>
+        <p className="text-sm text-gray-400">{category}</p>
+        <div className="flex flex-row space-x-1 items-center">
+          <Link href={url}>
+            <div className="flex flex-row">
+              <p className="cursor-pointer text-lg font-medium text-blue-500">
+                {title}
+              </p>
+            </div>
+          </Link>
+          <button onClick={bookmark}>
+            <MdAddCircle className="hover:text-blue-500 cursor-pointer" />
+          </button>
+        </div>
+        <Link href={`/link/${id}`}>
+          <p className="text-gray-600">{description}</p>
+        </Link>
+        {/* <a href={url} className="flex hover:text-blue-500">*/}
+        {/* removes https from url */}
+        {/* {url.replace(/(^\w+:|^)\/\//, "")}
+        </a>  */}
       </div>
     </div>
   );

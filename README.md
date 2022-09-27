@@ -4,6 +4,6 @@ linkChicago is a fullstack website directory application With TypeScript, Postgr
 
 Here is what you can do:
 
-* View credible public services websites related your daily life in Chicago
+* View credible public service websites related your daily life in Chicago
 * Login and build your custom homepage to easily access your most frequently visited websites
 
