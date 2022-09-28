@@ -95,13 +95,13 @@ function Home() {
         <title>linkChicago</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="container mx-auto max-w-5xl my-2 px-5 ">
-        <div className="columns-2 sm:columns-3 lg:columns-4 gap-5">
-          {/* <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5"> */}
+      <div className="container mx-auto max-w-5xl my-2 px-5 flex flex-col justify-center items-center">
+        {/* <div className="columns-2 sm:columns-3 lg:columns-4 gap-5 space-y-5"> */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
           {data?.links.edges.map(({ node }, i) => (
             // <Link href={`/link/${node.id}`} key={i}>
             //   <a>
-            <div className="break-inside-avoid-column">
+            <div className="break-inside-avoid-column" key={i}>
               <AwesomeLink
                 title={node.title}
                 category={node.category}
@@ -109,7 +109,6 @@ function Home() {
                 id={node.id}
                 description={node.description}
                 imageUrl={node.imageUrl}
-                key={i}
               />
             </div>
             //   </a>
@@ -118,7 +117,7 @@ function Home() {
         </div>
         {hasNextPage ? (
           <button
-            className="px-3 py-1 bg-blue-500 text-white rounded my-5 w-full inline-flex justify-center"
+            className="px-3 py-4 bg-blue-500 text-white font-semibold rounded-full mt-10 mb-20 w-50 inline-flex justify-center"
             onClick={() => {
               fetchMore({
                 variables: { after: endCursor },

@@ -7,6 +7,7 @@ import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { MdAddCircle } from "react-icons/md";
 import { FiExternalLink } from "react-icons/fi";
+import { useRouter } from "next/router";
 
 const BookmarkLinkMutation = gql`
   mutation ($id: String!) {
@@ -30,6 +31,7 @@ export const AwesomeLink = ({
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [createBookmark] = useMutation(BookmarkLinkMutation);
+  const router = useRouter();
 
   const bookmark = async () => {
     setIsLoading(true);
@@ -39,6 +41,8 @@ export const AwesomeLink = ({
       error: `Something went wrong 😥 Please try again`,
     });
     setIsLoading(false);
+    // router.replace(router.asPath);
+    // console.log("added bookmark");
   };
   return (
     <div key={id} className="shadow  max-w-md  rounded">
@@ -47,7 +51,11 @@ export const AwesomeLink = ({
           {category}
         </p>
         <Link href={url}>
-          <img src={imageUrl} className="w-full cursor-pointer" />
+          <img
+            src={imageUrl}
+            className="w-full object-cover cursor-pointer"
+            style={{ maxHeight: "7rem" }}
+          />
         </Link>
       </div>
 
@@ -60,7 +68,11 @@ export const AwesomeLink = ({
               </p>
             </div>
           </Link>
-          <button onClick={bookmark}>
+          <button
+            onClick={() => {
+              bookmark();
+            }}
+          >
             <MdAddCircle className="hover:text-blue-500 cursor-pointer" />
           </button>
         </div>
